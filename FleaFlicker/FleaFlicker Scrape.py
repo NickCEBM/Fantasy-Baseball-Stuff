@@ -16,6 +16,7 @@
 import pandas as pd
 from requests import get
 from bs4 import BeautifulSoup
+from datetime import date
 
 
 # +
@@ -85,9 +86,11 @@ for r in rank_headers:
         all_df[r+'_Points'] = all_df[r].rank()
 
 all_df['Total_Points'] = all_df.iloc[:,-12:].sum(axis=1)
-all_df['Overall_Rank'] = all_df.Total_Points.rank(ascending=True)
+all_df['Overall_Rank'] = all_df.Total_Points.rank(ascending=False)
 
 all_df.head()
 
-# +
-#all_df.to_csv('current_rankings.csv')
+t_date = str(date.today())
+all_df.to_csv('current_rankings_'+t_date+'.csv')
+
+
