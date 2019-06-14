@@ -54,7 +54,7 @@ for l in league_ids:
             d_dict['Rank'] = row.find_all('td', {'class': 'right text-center'})[-1].text
         except IndexError:
             d_dict['Rank'] = row.find_all('td', {'class': 'bottom right text-center'})[-1].text
-        heads = ['HR', 'R','RBI','SB','OBP','OPS','SO','SV','HD','ERA','WHP','QS']
+        heads = exp_headers[2:14]
         if d_dict['Owner'] == 'Take Over':
             stats = row.find_all('span', {'class': 'nowrap'})
         else:
@@ -76,7 +76,7 @@ all_df.SV = all_df.SV.astype(int)
 all_df.HD = all_df.HD.astype(int)
 all_df.ERA = all_df.ERA.astype(float)
 all_df.WHP = all_df.WHP.astype(float)
-all_df.QS = all_df.QS.astype(int)
+all_df.QS = all_df.SV.astype(int)
 
 rank_headers = ['HR', 'R','RBI','SB','OBP','OPS','SO','SV','HD','ERA','WHP','QS']
 for r in rank_headers:
@@ -89,6 +89,8 @@ all_df['Total_Points'] = all_df.iloc[:,-12:].sum(axis=1)
 all_df['Overall_Rank'] = all_df.Total_Points.rank(ascending=False)
 
 all_df.head()
+
+all_df[all_df.Owner == 'xacex']
 
 t_date = str(date.today())
 all_df.to_csv('current_rankings_'+t_date+'.csv')
