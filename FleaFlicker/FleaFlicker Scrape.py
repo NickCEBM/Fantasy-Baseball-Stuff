@@ -65,9 +65,9 @@ for l in league_ids:
 # -
 
 all_df = pd.DataFrame(all_teams, columns=exp_headers)
-all_df.HR = all_df.HR.astype(int)
-all_df.R = all_df.R.astype(int)
-all_df.RBI = all_df.RBI.astype(int)
+all_df.HR = all_df.HR.str.replace(",","").astype(int)
+all_df.R = all_df.R.str.replace(",","").astype(int)
+all_df.RBI = all_df.RBI.str.replace(",","").astype(int)
 all_df.SB = all_df.SB.astype(int)
 all_df.OBP = all_df.OBP.astype(float)
 all_df.OPS = all_df.OPS.astype(float)
