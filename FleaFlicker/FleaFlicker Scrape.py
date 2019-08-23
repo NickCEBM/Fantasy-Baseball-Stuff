@@ -94,3 +94,35 @@ t_date = str(date.today())
 all_df.to_csv('current_rankings_'+t_date+'.csv')
 
 
+def make_ranks(df):
+    rank_headers = ['HR', 'R','RBI','SB','OBP','OPS','SO','SV','HD','ERA','WHP','QS']
+    for r in rank_headers:
+        if r in ['ERA', 'WHP']:
+            df[r+'_Points'] = df[r].rank(ascending=False)
+        else:
+            df[r+'_Points'] = df[r].rank()
+    df['Total_Points'] = df.iloc[:,-12:].sum(axis=1)
+    df['Overall_Rank'] = df.Total_Points.rank(ascending=False)
+    return df
+
+
+# +
+leagues = ['D2', 'D3', 'D4']
+
+league_dfs = []
+for d in leagues:
+    l = all_df[all_df.league_name.str.contains(d)].reset_index(drop=True)
+    league_dfs.append(l)
+
+final_dfs = []
+for l_d in league_dfs:
+    d = make_ranks(l_d)
+    final_dfs.append(d)
+# -
+
+final_dfs[2]
+
+for div, name in zip(final_dfs, leagues):
+    div.to_csv('current_rankings_'+name+'_'+t_date+'.csv')
+
+
